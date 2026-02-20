@@ -1,7 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Heart, Leaf, Brain, Zap, Star, ArrowRight, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
+import { Heart, Leaf, Brain, Zap, Star, ArrowRight, Facebook, Instagram, Twitter, Linkedin, Droplet, Wind, Smile } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 
@@ -12,9 +12,9 @@ export default function Home() {
   const services = [
     {
       id: "yoga",
-      name: "Yoga",
-      description: "Strengthen your body and calm your mind through ancient yoga practices",
-      price: "$45",
+      name: "Yoga & Asana",
+      description: "Strengthen your body and calm your mind through ancient yoga practices and postures",
+      price: "₹2,500",
       icon: Leaf,
       color: "purple",
       gradient: "bg-gradient-purple",
@@ -22,9 +22,9 @@ export default function Home() {
     },
     {
       id: "meditation",
-      name: "Meditation",
-      description: "Find inner peace and clarity through guided meditation sessions",
-      price: "$35",
+      name: "Guided Meditation",
+      description: "Find inner peace and clarity through guided meditation and mindfulness sessions",
+      price: "₹1,500",
       icon: Brain,
       color: "teal",
       gradient: "bg-gradient-teal",
@@ -32,9 +32,9 @@ export default function Home() {
     },
     {
       id: "massage",
-      name: "Massage Therapy",
-      description: "Release tension and restore balance with therapeutic massage",
-      price: "$60",
+      name: "Therapeutic Massage",
+      description: "Release tension and restore balance with therapeutic massage and energy healing",
+      price: "₹3,000",
       icon: Heart,
       color: "coral",
       gradient: "bg-gradient-secondary",
@@ -42,36 +42,56 @@ export default function Home() {
     },
     {
       id: "wellness",
-      name: "Wellness Coaching",
-      description: "Personalized guidance for your holistic wellness journey",
-      price: "$55",
+      name: "Holistic Wellness",
+      description: "Personalized guidance for your complete wellness journey and lifestyle transformation",
+      price: "₹2,800",
       icon: Zap,
       color: "gold",
       gradient: "bg-gradient-accent",
       badge: "Personalized",
     },
+    {
+      id: "ayurveda",
+      name: "Ayurvedic Healing",
+      description: "Traditional Ayurvedic treatments and consultations for natural wellness",
+      price: "₹2,000",
+      icon: Droplet,
+      color: "teal",
+      gradient: "bg-gradient-teal",
+      badge: "Traditional",
+    },
+    {
+      id: "reiki",
+      name: "Reiki Energy Therapy",
+      description: "Experience the healing power of Reiki energy and spiritual rejuvenation",
+      price: "₹1,800",
+      icon: Wind,
+      color: "purple",
+      gradient: "bg-gradient-purple",
+      badge: "Spiritual",
+    },
   ];
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
+      name: "Priya Sharma",
       role: "Yoga Enthusiast",
       content: "Serenity has completely transformed my wellness journey. The instructors are incredibly knowledgeable and caring.",
-      initials: "SJ",
+      initials: "PS",
       color: "#9b59b6",
     },
     {
-      name: "Michael Chen",
+      name: "Rajesh Kumar",
       role: "Meditation Practitioner",
       content: "The meditation sessions have brought so much peace into my daily life. Highly recommended!",
-      initials: "MC",
+      initials: "RK",
       color: "#1abc9c",
     },
     {
-      name: "Emma Wilson",
+      name: "Anjali Patel",
       role: "Wellness Client",
       content: "Best wellness center I've ever been to. The atmosphere is so calming and the staff is wonderful.",
-      initials: "EW",
+      initials: "AP",
       color: "#ff6b6b",
     },
   ];
@@ -82,9 +102,7 @@ export default function Home() {
       <nav className="navbar-sticky">
         <div className="container mx-auto py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center text-white font-bold">
-              S
-            </div>
+            <img src="/logo.svg" alt="Serenity Logo" className="w-8 h-8" />
             <span className="font-bold text-lg">Serenity Wellness</span>
           </Link>
 
@@ -95,6 +113,9 @@ export default function Home() {
             <a href="#testimonials" className="text-foreground hover:text-primary transition-colors">
               Testimonials
             </a>
+            <Link href="/blog" className="text-foreground hover:text-primary transition-colors">
+              Blog
+            </Link>
             <Link href="/contact" className="text-foreground hover:text-primary transition-colors">
               Contact
             </Link>
@@ -122,7 +143,7 @@ export default function Home() {
           <div className="max-w-3xl fade-in">
             <h1 className="text-foreground mb-6">Find Your Inner Peace at Serenity</h1>
             <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              Discover holistic wellness through yoga, meditation, massage therapy, and personalized wellness coaching.
+              Discover holistic wellness through yoga, meditation, massage therapy, Ayurvedic healing, and personalized wellness coaching.
               Transform your mind, body, and spirit in our peaceful sanctuary.
             </p>
 
@@ -138,15 +159,15 @@ export default function Home() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 mt-12 pt-12 border-t border-border">
               <div className="text-center">
-                <div className="text-3xl font-bold gradient-text">500+</div>
+                <div className="text-3xl font-bold gradient-text">1000+</div>
                 <p className="text-sm text-muted-foreground">Happy Clients</p>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold gradient-text">10+</div>
+                <div className="text-3xl font-bold gradient-text">15+</div>
                 <p className="text-sm text-muted-foreground">Expert Instructors</p>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold gradient-text">5 Yrs</div>
+                <div className="text-3xl font-bold gradient-text">8 Yrs</div>
                 <p className="text-sm text-muted-foreground">In Business</p>
               </div>
             </div>
@@ -160,11 +181,11 @@ export default function Home() {
           <div className="text-center mb-16 fade-in">
             <h2 className="text-foreground mb-4">Our Wellness Services</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Explore our range of holistic wellness services designed to nurture your body and mind
+              Explore our comprehensive range of holistic wellness services designed to nurture your body, mind, and spirit
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => {
               const Icon = service.icon;
               return (
@@ -220,17 +241,17 @@ export default function Home() {
               {
                 icon: "🌿",
                 title: "Expert Instructors",
-                description: "Certified professionals with years of experience in holistic wellness",
+                description: "Certified professionals with years of experience in holistic wellness and traditional healing",
               },
               {
                 icon: "🧘",
                 title: "Personalized Approach",
-                description: "Customized wellness plans tailored to your unique needs and goals",
+                description: "Customized wellness plans tailored to your unique needs, goals, and health conditions",
               },
               {
                 icon: "✨",
                 title: "Peaceful Environment",
-                description: "A serene sanctuary designed for relaxation and inner transformation",
+                description: "A serene sanctuary designed for relaxation, healing, and inner transformation",
               },
             ].map((item, index) => (
               <div key={index} className="card-premium text-center scale-up" style={{ animationDelay: `${index * 0.1}s` }}>
@@ -282,7 +303,7 @@ export default function Home() {
         <div className="container mx-auto text-center fade-in">
           <h2 className="text-white mb-4">Ready to Transform Your Wellness?</h2>
           <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-            Join hundreds of clients who have discovered their path to inner peace and holistic wellness
+            Join thousands of clients who have discovered their path to inner peace and holistic wellness
           </p>
           <Link href="/booking">
             <Button className="btn-primary">Start Your Journey Today</Button>
@@ -295,7 +316,10 @@ export default function Home() {
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h4 className="font-bold mb-4">Serenity Wellness</h4>
+              <div className="flex items-center gap-2 mb-4">
+                <img src="/logo.svg" alt="Serenity Logo" className="w-6 h-6" />
+                <h4 className="font-bold">Serenity Wellness</h4>
+              </div>
               <p className="text-white/70 text-sm">Your sanctuary for holistic wellness and inner peace</p>
             </div>
             <div>
@@ -308,26 +332,44 @@ export default function Home() {
                 </li>
                 <li>
                   <Link href="/blog" className="text-white/70 hover:text-white transition-colors">
-                    Blog
+                    Blog & Resources
                   </Link>
                 </li>
                 <li>
                   <Link href="/contact" className="text-white/70 hover:text-white transition-colors">
-                    Contact
+                    Contact Us
                   </Link>
+                </li>
+                <li>
+                  <a href="#" className="text-white/70 hover:text-white transition-colors">
+                    About Us
+                  </a>
                 </li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold mb-4">Services</h4>
               <ul className="space-y-2 text-sm">
-                {services.map((service) => (
-                  <li key={service.id}>
-                    <a href="#services" className="text-white/70 hover:text-white transition-colors">
-                      {service.name}
-                    </a>
-                  </li>
-                ))}
+                <li>
+                  <a href="#services" className="text-white/70 hover:text-white transition-colors">
+                    Yoga & Asana
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" className="text-white/70 hover:text-white transition-colors">
+                    Meditation
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" className="text-white/70 hover:text-white transition-colors">
+                    Massage Therapy
+                  </a>
+                </li>
+                <li>
+                  <a href="#services" className="text-white/70 hover:text-white transition-colors">
+                    Wellness Coaching
+                  </a>
+                </li>
               </ul>
             </div>
             <div>

@@ -78,7 +78,10 @@ export default function Contact() {
             <ArrowLeft className="w-5 h-5" />
             <span className="font-semibold">Back</span>
           </Link>
-          <span className="font-bold text-lg">Contact Us</span>
+          <div className="flex items-center gap-2">
+            <img src="/logo.svg" alt="Serenity Logo" className="w-6 h-6" />
+            <span className="font-bold text-lg">Contact Us</span>
+          </div>
           <div className="w-20"></div>
         </div>
       </div>

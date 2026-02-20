@@ -67,10 +67,12 @@ export default function Booking() {
   };
 
   const services = [
-    { id: "yoga", name: "Yoga - $45" },
-    { id: "meditation", name: "Meditation - $35" },
-    { id: "massage", name: "Massage Therapy - $60" },
-    { id: "wellness", name: "Wellness Coaching - $55" },
+    { id: "yoga", name: "Yoga & Asana - Rs 2,500" },
+    { id: "meditation", name: "Guided Meditation - Rs 1,500" },
+    { id: "massage", name: "Therapeutic Massage - Rs 3,000" },
+    { id: "wellness", name: "Holistic Wellness - Rs 2,800" },
+    { id: "ayurveda", name: "Ayurvedic Healing - Rs 2,000" },
+    { id: "reiki", name: "Reiki Energy Therapy - Rs 1,800" },
   ];
 
   const timeSlots = [
@@ -94,7 +96,10 @@ export default function Booking() {
             <ArrowLeft className="w-5 h-5" />
             <span className="font-semibold">Back</span>
           </Link>
-          <span className="font-bold text-lg">Book Your Wellness Session</span>
+          <div className="flex items-center gap-2">
+            <img src="/logo.svg" alt="Serenity Logo" className="w-6 h-6" />
+            <span className="font-bold text-lg">Book Your Session</span>
+          </div>
           <div className="w-20"></div>
         </div>
       </div>

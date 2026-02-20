@@ -74,3 +74,12 @@
 - [x] Add vibrant footer with colored social icons
 - [ ] Implement color-coded appointment status indicators
 - [x] Add animated background patterns and subtle textures
+
+
+## Logo & Branding Updates
+- [x] Add wellness logo icon (replace "S" text logo)
+- [x] Update logo throughout all pages (navbar, footer, etc.)
+- [x] Update quick links in navigation and footer
+- [x] Update service offerings and descriptions (added Ayurveda and Reiki)
+- [x] Change all prices from $ to Rs (Indian Rupees)
+- [x] Update contact information and location

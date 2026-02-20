@@ -1,0 +1,26 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#6b9b7f" opacity="0.1" stroke="#6b9b7f" stroke-width="2"/>
+  
+  <!-- Lotus flower petals -->
+  <g fill="#6b9b7f">
+    <!-- Top petal -->
+    <ellipse cx="100" cy="50" rx="18" ry="28" fill="#6b9b7f"/>
+    <!-- Right top petal -->
+    <ellipse cx="135" cy="65" rx="18" ry="28" fill="#1abc9c" transform="rotate(60 135 65)"/>
+    <!-- Right bottom petal -->
+    <ellipse cx="135" cy="135" rx="18" ry="28" fill="#9b59b6" transform="rotate(120 135 135)"/>
+    <!-- Bottom petal -->
+    <ellipse cx="100" cy="150" rx="18" ry="28" fill="#ff6b6b"/>
+    <!-- Left bottom petal -->
+    <ellipse cx="65" cy="135" rx="18" ry="28" fill="#ffa500" transform="rotate(-120 65 135)"/>
+    <!-- Left top petal -->
+    <ellipse cx="65" cy="65" rx="18" ry="28" fill="#f39c12" transform="rotate(-60 65 65)"/>
+  </g>
+  
+  <!-- Center circle -->
+  <circle cx="100" cy="100" r="20" fill="#6b9b7f"/>
+  
+  <!-- Inner meditation dot -->
+  <circle cx="100" cy="100" r="8" fill="#ffffff"/>
+</svg>
