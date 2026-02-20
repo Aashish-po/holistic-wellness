@@ -1,79 +1,93 @@
-import { useState } from "react";
-import { useLocation } from "wouter";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Heart, Zap, Users, Leaf, Facebook, Instagram, Twitter, Mail } from "lucide-react";
-
-const services = [
-  {
-    id: 1,
-    name: "Yoga",
-    description: "Strengthen your body and calm your mind through ancient yoga practices",
-    price: "$45",
-    icon: "🧘",
-    color: "bg-green-50",
-  },
-  {
-    id: 2,
-    name: "Meditation",
-    description: "Find inner peace and clarity through guided meditation sessions",
-    price: "$35",
-    icon: "🕉️",
-    color: "bg-blue-50",
-  },
-  {
-    id: 3,
-    name: "Massage Therapy",
-    description: "Release tension and restore balance with therapeutic massage",
-    price: "$60",
-    icon: "💆",
-    color: "bg-amber-50",
-  },
-  {
-    id: 4,
-    name: "Wellness Coaching",
-    description: "Personalized guidance for holistic health and lifestyle transformation",
-    price: "$75",
-    icon: "🌟",
-    color: "bg-purple-50",
-  },
-];
-
-const testimonials = [
-  {
-    name: "Sarah Johnson",
-    role: "Yoga Enthusiast",
-    text: "Serenity has completely transformed my wellness journey. The instructors are incredibly knowledgeable and caring.",
-    image: "👩",
-  },
-  {
-    name: "Michael Chen",
-    role: "Meditation Practitioner",
-    text: "The peaceful atmosphere and expert guidance have helped me achieve a level of mindfulness I never thought possible.",
-    image: "👨",
-  },
-  {
-    name: "Emma Davis",
-    role: "Wellness Coach Client",
-    text: "The holistic approach to wellness here is unmatched. I feel healthier and happier than ever before.",
-    image: "👩",
-  },
-];
+import { Link } from "wouter";
+import { Heart, Leaf, Brain, Zap, Star, ArrowRight, Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
+import { trpc } from "@/lib/trpc";
+import { useState } from "react";
 
 export default function Home() {
-  const [, setLocation] = useLocation();
+  const { user } = useAuth();
+  const [hoveredService, setHoveredService] = useState<string | null>(null);
+
+  const services = [
+    {
+      id: "yoga",
+      name: "Yoga",
+      description: "Strengthen your body and calm your mind through ancient yoga practices",
+      price: "$45",
+      icon: Leaf,
+      color: "purple",
+      gradient: "bg-gradient-purple",
+      badge: "Most Popular",
+    },
+    {
+      id: "meditation",
+      name: "Meditation",
+      description: "Find inner peace and clarity through guided meditation sessions",
+      price: "$35",
+      icon: Brain,
+      color: "teal",
+      gradient: "bg-gradient-teal",
+      badge: "Beginner Friendly",
+    },
+    {
+      id: "massage",
+      name: "Massage Therapy",
+      description: "Release tension and restore balance with therapeutic massage",
+      price: "$60",
+      icon: Heart,
+      color: "coral",
+      gradient: "bg-gradient-secondary",
+      badge: "Premium",
+    },
+    {
+      id: "wellness",
+      name: "Wellness Coaching",
+      description: "Personalized guidance for your holistic wellness journey",
+      price: "$55",
+      icon: Zap,
+      color: "gold",
+      gradient: "bg-gradient-accent",
+      badge: "Personalized",
+    },
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "Yoga Enthusiast",
+      content: "Serenity has completely transformed my wellness journey. The instructors are incredibly knowledgeable and caring.",
+      initials: "SJ",
+      color: "#9b59b6",
+    },
+    {
+      name: "Michael Chen",
+      role: "Meditation Practitioner",
+      content: "The meditation sessions have brought so much peace into my daily life. Highly recommended!",
+      initials: "MC",
+      color: "#1abc9c",
+    },
+    {
+      name: "Emma Wilson",
+      role: "Wellness Client",
+      content: "Best wellness center I've ever been to. The atmosphere is so calming and the staff is wonderful.",
+      initials: "EW",
+      color: "#ff6b6b",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Sticky Navigation */}
+      {/* Navigation */}
       <nav className="navbar-sticky">
-        <div className="container flex items-center justify-between py-4">
-          <div className="flex items-center gap-2">
-            <Leaf className="w-6 h-6 text-primary" />
-            <span className="font-bold text-xl text-foreground" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Serenity Wellness
-            </span>
-          </div>
+        <div className="container mx-auto py-4 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center text-white font-bold">
+              S
+            </div>
+            <span className="font-bold text-lg">Serenity Wellness</span>
+          </Link>
+
           <div className="hidden md:flex items-center gap-8">
             <a href="#services" className="text-foreground hover:text-primary transition-colors">
               Services
@@ -81,59 +95,59 @@ export default function Home() {
             <a href="#testimonials" className="text-foreground hover:text-primary transition-colors">
               Testimonials
             </a>
-            <a href="#contact" className="text-foreground hover:text-primary transition-colors">
+            <Link href="/contact" className="text-foreground hover:text-primary transition-colors">
               Contact
-            </a>
-            <button
-              onClick={() => setLocation("/booking")}
-              className="btn-primary"
-            >
-              Book Now
-            </button>
+            </Link>
+            <Link href="/booking">
+              <Button className="btn-primary">Book Now</Button>
+            </Link>
           </div>
-          <div className="md:hidden">
-            <button
-              onClick={() => setLocation("/booking")}
-              className="btn-primary text-sm"
-            >
-              Book
-            </button>
+
+          <div className="md:hidden flex gap-2">
+            <Link href="/booking">
+              <Button className="btn-primary text-sm">Book</Button>
+            </Link>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="hero-gradient relative overflow-hidden pt-20 pb-32 md:pt-32 md:pb-48">
+      <section className="hero-gradient py-20 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-accent rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-accent-purple rounded-full blur-3xl"></div>
+        </div>
+
         <div className="container mx-auto relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="fade-in">
-              <h1
-                className="text-foreground mb-6 leading-tight"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                Find Your Inner Peace at Serenity
-              </h1>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                Discover holistic wellness through yoga, meditation, massage therapy, and personalized wellness coaching. Transform your mind, body, and spirit in our peaceful sanctuary.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={() => setLocation("/booking")}
-                  className="btn-primary"
-                >
-                  Book an Appointment
-                </button>
-                <button
-                  onClick={() => setLocation("/services")}
-                  className="btn-secondary"
-                >
-                  Explore Services
-                </button>
-              </div>
+          <div className="max-w-3xl fade-in">
+            <h1 className="text-foreground mb-6">Find Your Inner Peace at Serenity</h1>
+            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+              Discover holistic wellness through yoga, meditation, massage therapy, and personalized wellness coaching.
+              Transform your mind, body, and spirit in our peaceful sanctuary.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/booking">
+                <Button className="btn-primary">Book an Appointment</Button>
+              </Link>
+              <a href="#services">
+                <Button className="btn-secondary">Explore Services</Button>
+              </a>
             </div>
-            <div className="hidden md:block slide-in-right">
-              <div className="relative h-96 bg-gradient-to-br from-primary/20 to-accent/20 rounded-3xl flex items-center justify-center">
-                <Leaf className="w-48 h-48 text-primary/30" />
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-4 mt-12 pt-12 border-t border-border">
+              <div className="text-center">
+                <div className="text-3xl font-bold gradient-text">500+</div>
+                <p className="text-sm text-muted-foreground">Happy Clients</p>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold gradient-text">10+</div>
+                <p className="text-sm text-muted-foreground">Expert Instructors</p>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold gradient-text">5 Yrs</div>
+                <p className="text-sm text-muted-foreground">In Business</p>
               </div>
             </div>
           </div>
@@ -141,231 +155,202 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="section-padding bg-white">
+      <section id="services" className="py-20 md:py-32 bg-background">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2
-              className="text-foreground mb-4"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              Our Services
-            </h2>
+          <div className="text-center mb-16 fade-in">
+            <h2 className="text-foreground mb-4">Our Wellness Services</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Explore our range of wellness services designed to nurture your body and mind
+              Explore our range of holistic wellness services designed to nurture your body and mind
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, index) => (
-              <div
-                key={service.id}
-                className="service-card"
-                style={{
-                  animation: `fadeIn 0.6s ease-out ${index * 0.1}s both`,
-                }}
-              >
-                <div className={`text-5xl mb-4 ${service.color} p-4 rounded-2xl inline-block`}>
-                  {service.icon}
-                </div>
-                <h3
-                  className="text-xl font-bold text-foreground mb-2"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+            {services.map((service, index) => {
+              const Icon = service.icon;
+              return (
+                <div
+                  key={service.id}
+                  className={`service-card ${service.id} slide-in-left`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                  onMouseEnter={() => setHoveredService(service.id)}
+                  onMouseLeave={() => setHoveredService(null)}
                 >
-                  {service.name}
-                </h3>
-                <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
-                  {service.description}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-primary">{service.price}</span>
-                  <button
-                    onClick={() => setLocation("/booking")}
-                    className="btn-primary text-sm"
-                  >
-                    Book
-                  </button>
+                  {/* Badge */}
+                  <div className={`badge badge-${service.color} mb-4 inline-block`}>
+                    {service.badge}
+                  </div>
+
+                  {/* Icon */}
+                  <div className={`icon-circle ${service.color} mb-4`}>
+                    <Icon className="w-6 h-6" />
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="text-xl font-bold text-foreground mb-2">{service.name}</h3>
+                  <p className="text-muted-foreground text-sm mb-4">{service.description}</p>
+
+                  {/* Price and CTA */}
+                  <div className="flex items-center justify-between pt-4 border-t border-border">
+                    <span className="text-2xl font-bold gradient-text">{service.price}</span>
+                    <Link href="/booking">
+                      <button className="p-2 rounded-lg bg-muted hover:bg-primary hover:text-white transition-all">
+                        <ArrowRight className="w-5 h-5" />
+                      </button>
+                    </Link>
+                  </div>
                 </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section className="py-20 md:py-32 bg-muted">
+        <div className="container mx-auto">
+          <div className="text-center mb-16 fade-in">
+            <h2 className="text-foreground mb-4">Why Choose Serenity?</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Experience the difference with our holistic approach to wellness
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: "🌿",
+                title: "Expert Instructors",
+                description: "Certified professionals with years of experience in holistic wellness",
+              },
+              {
+                icon: "🧘",
+                title: "Personalized Approach",
+                description: "Customized wellness plans tailored to your unique needs and goals",
+              },
+              {
+                icon: "✨",
+                title: "Peaceful Environment",
+                description: "A serene sanctuary designed for relaxation and inner transformation",
+              },
+            ].map((item, index) => (
+              <div key={index} className="card-premium text-center scale-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="text-5xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
+                <p className="text-muted-foreground">{item.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="section-padding bg-background">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center scale-up">
-              <div className="inline-block p-4 bg-primary/10 rounded-full mb-4">
-                <Heart className="w-8 h-8 text-primary" />
-              </div>
-              <h3
-                className="text-xl font-bold text-foreground mb-2"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                Holistic Care
-              </h3>
-              <p className="text-muted-foreground">
-                We address your complete wellness - mind, body, and spirit
-              </p>
-            </div>
-            <div className="text-center scale-up" style={{ animationDelay: "0.1s" }}>
-              <div className="inline-block p-4 bg-accent/10 rounded-full mb-4">
-                <Users className="w-8 h-8 text-accent" />
-              </div>
-              <h3
-                className="text-xl font-bold text-foreground mb-2"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                Expert Instructors
-              </h3>
-              <p className="text-muted-foreground">
-                Certified professionals with years of experience in wellness
-              </p>
-            </div>
-            <div className="text-center scale-up" style={{ animationDelay: "0.2s" }}>
-              <div className="inline-block p-4 bg-primary/10 rounded-full mb-4">
-                <Zap className="w-8 h-8 text-primary" />
-              </div>
-              <h3
-                className="text-xl font-bold text-foreground mb-2"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                Transformative Results
-              </h3>
-              <p className="text-muted-foreground">
-                Experience real, lasting changes in your health and wellbeing
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials Section */}
-      <section id="testimonials" className="section-padding bg-white">
+      <section id="testimonials" className="py-20 md:py-32 bg-background">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2
-              className="text-foreground mb-4"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              What Our Clients Say
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Join hundreds of satisfied clients on their wellness journey
+          <div className="text-center mb-16 fade-in">
+            <h2 className="text-foreground mb-4">What Our Clients Say</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Hear from our satisfied wellness community members
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card
-                key={index}
-                className="card-premium"
-                style={{
-                  animation: `fadeIn 0.6s ease-out ${index * 0.1}s both`,
-                }}
-              >
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="text-4xl">{testimonial.image}</div>
-                    <div>
-                      <p className="font-semibold text-foreground">{testimonial.name}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                    </div>
+              <div key={index} className="testimonial-card slide-in-right" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="avatar-circle" style={{ background: testimonial.color }}>
+                    {testimonial.initials}
                   </div>
-                  <p className="text-muted-foreground italic">"{testimonial.text}"</p>
-                </CardContent>
-              </Card>
+                  <div>
+                    <h4 className="font-bold text-foreground">{testimonial.name}</h4>
+                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                  </div>
+                </div>
+                <p className="text-foreground italic">"{testimonial.content}"</p>
+                <div className="flex gap-1 mt-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-accent text-accent" />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="section-padding bg-gradient-to-r from-primary/10 to-accent/10">
-        <div className="container mx-auto text-center">
-          <h2
-            className="text-foreground mb-6"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Ready to Begin Your Wellness Journey?
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Take the first step towards a healthier, more peaceful life. Book your session today.
+      <section className="py-16 md:py-24 bg-gradient-primary text-white">
+        <div className="container mx-auto text-center fade-in">
+          <h2 className="text-white mb-4">Ready to Transform Your Wellness?</h2>
+          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
+            Join hundreds of clients who have discovered their path to inner peace and holistic wellness
           </p>
-          <button
-            onClick={() => setLocation("/booking")}
-            className="btn-primary"
-          >
-            Schedule Your Session
-          </button>
+          <Link href="/booking">
+            <Button className="btn-primary">Start Your Journey Today</Button>
+          </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-foreground text-background py-12">
+      <footer className="bg-foreground text-white py-12">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Leaf className="w-5 h-5" />
-                <span className="font-bold" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  Serenity Wellness
-                </span>
-              </div>
-              <p className="text-background/80 text-sm">
-                Your sanctuary for holistic wellness and inner peace
-              </p>
+              <h4 className="font-bold mb-4">Serenity Wellness</h4>
+              <p className="text-white/70 text-sm">Your sanctuary for holistic wellness and inner peace</p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-background/80">
+              <h4 className="font-bold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#services" className="hover:text-background transition-colors">
+                  <a href="#services" className="text-white/70 hover:text-white transition-colors">
                     Services
                   </a>
                 </li>
                 <li>
-                  <a href="/blog" className="hover:text-background transition-colors">
+                  <Link href="/blog" className="text-white/70 hover:text-white transition-colors">
                     Blog
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/contact" className="hover:text-background transition-colors">
+                  <Link href="/contact" className="text-white/70 hover:text-white transition-colors">
                     Contact
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Services</h4>
-              <ul className="space-y-2 text-sm text-background/80">
-                <li>Yoga Classes</li>
-                <li>Meditation</li>
-                <li>Massage Therapy</li>
-                <li>Wellness Coaching</li>
+              <h4 className="font-bold mb-4">Services</h4>
+              <ul className="space-y-2 text-sm">
+                {services.map((service) => (
+                  <li key={service.id}>
+                    <a href="#services" className="text-white/70 hover:text-white transition-colors">
+                      {service.name}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Follow Us</h4>
+              <h4 className="font-bold mb-4">Follow Us</h4>
               <div className="flex gap-4">
-                <a href="#" className="hover:text-background transition-colors">
+                <a href="#" className="text-white/70 hover:text-white transition-colors">
                   <Facebook className="w-5 h-5" />
                 </a>
-                <a href="#" className="hover:text-background transition-colors">
+                <a href="#" className="text-white/70 hover:text-white transition-colors">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="#" className="hover:text-background transition-colors">
+                <a href="#" className="text-white/70 hover:text-white transition-colors">
                   <Twitter className="w-5 h-5" />
                 </a>
-                <a href="#" className="hover:text-background transition-colors">
-                  <Mail className="w-5 h-5" />
+                <a href="#" className="text-white/70 hover:text-white transition-colors">
+                  <Linkedin className="w-5 h-5" />
                 </a>
               </div>
             </div>
           </div>
-          <div className="border-t border-background/20 pt-8 text-center text-sm text-background/80">
-            <p>&copy; 2026 Serenity Holistic Wellness. All rights reserved.</p>
+
+          <div className="border-t border-white/10 pt-8 text-center text-sm text-white/70">
+            <p>&copy; 2024 Serenity Holistic Wellness. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -10,197 +10,275 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
-import { Leaf, ArrowLeft, Mail, Phone, MapPin } from "lucide-react";
+import { ArrowLeft, Mail, Phone, MapPin, CheckCircle, AlertCircle, Clock } from "lucide-react";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
-  phone: z.string().optional(),
+  phone: z.string().min(10, "Invalid phone number"),
+  subject: z.string().min(5, "Subject must be at least 5 characters"),
   message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
 export default function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   
   const submitContactMutation = trpc.contact.submit.useMutation();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
   });
 
   const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
     try {
       await submitContactMutation.mutateAsync(data);
+      setIsSuccess(true);
       toast.success("Message sent successfully! We'll get back to you soon.");
       reset();
+      setTimeout(() => setIsSuccess(false), 3000);
     } catch (error) {
       toast.error("Failed to send message. Please try again.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
+
+  const contactInfo = [
+    {
+      icon: Mail,
+      title: "Email",
+      value: "info@serenity.com",
+      color: "accent-teal",
+    },
+    {
+      icon: Phone,
+      title: "Phone",
+      value: "(555) 123-4567",
+      color: "accent-purple",
+    },
+    {
+      icon: MapPin,
+      title: "Location",
+      value: "123 Serenity Lane, Wellness City, WC 12345",
+      color: "accent-coral",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-border sticky top-0 z-40">
+      <div className="navbar-sticky">
         <div className="container mx-auto py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <ArrowLeft className="w-5 h-5" />
             <span className="font-semibold">Back</span>
           </Link>
-          <div className="flex items-center gap-2">
-            <Leaf className="w-6 h-6 text-accent" />
-            <span className="font-bold text-lg">Serenity Wellness</span>
-          </div>
+          <span className="font-bold text-lg">Contact Us</span>
           <div className="w-20"></div>
         </div>
       </div>
 
       <div className="container mx-auto py-12">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Get in Touch</h1>
-            <p className="text-lg text-muted-foreground">
-              Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          {/* Header Section */}
+          <div className="text-center mb-16 fade-in">
+            <h1 className="text-foreground mb-4">Get In Touch</h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Have questions about our services? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Contact Info Cards */}
-            <Card className="border-border">
-              <CardContent className="pt-6">
-                <div className="flex flex-col items-center text-center">
-                  <Mail className="w-8 h-8 text-accent mb-4" />
-                  <h3 className="font-semibold text-foreground mb-2">Email</h3>
-                  <p className="text-muted-foreground text-sm">info@serenity.com</p>
+          {/* Contact Info Cards */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {contactInfo.map((info, index) => {
+              const Icon = info.icon;
+              return (
+                <div
+                  key={index}
+                  className="card-premium text-center scale-up"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className={`icon-circle ${info.color} mx-auto mb-4`}>
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="font-bold text-foreground mb-2">{info.title}</h3>
+                  <p className="text-muted-foreground text-sm">{info.value}</p>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border">
-              <CardContent className="pt-6">
-                <div className="flex flex-col items-center text-center">
-                  <Phone className="w-8 h-8 text-accent mb-4" />
-                  <h3 className="font-semibold text-foreground mb-2">Phone</h3>
-                  <p className="text-muted-foreground text-sm">(555) 123-4567</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border">
-              <CardContent className="pt-6">
-                <div className="flex flex-col items-center text-center">
-                  <MapPin className="w-8 h-8 text-accent mb-4" />
-                  <h3 className="font-semibold text-foreground mb-2">Location</h3>
-                  <p className="text-muted-foreground text-sm">123 Serenity Lane<br />Wellness City, WC 12345</p>
-                </div>
-              </CardContent>
-            </Card>
+              );
+            })}
           </div>
 
           {/* Contact Form */}
-          <Card className="border-border">
-            <CardHeader>
+          <Card className="card-premium border-2 border-accent/20">
+            <CardHeader className="bg-gradient-to-r from-accent-purple/5 to-accent-teal/5">
               <CardTitle>Send us a Message</CardTitle>
               <CardDescription>We'll get back to you within 24 hours</CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
+            <CardContent className="pt-6">
+              {isSuccess && (
+                <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg flex gap-3 fade-in">
+                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
                   <div>
-                    <Label htmlFor="name">Full Name</Label>
+                    <h3 className="font-bold text-green-900">Message Sent!</h3>
+                    <p className="text-green-800 text-sm">Thank you for contacting us. We'll be in touch soon.</p>
+                  </div>
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="name" className="text-foreground font-semibold">
+                      Full Name
+                    </Label>
                     <Input
                       id="name"
                       placeholder="John Doe"
                       {...register("name")}
-                      className="mt-2"
+                      className="mt-2 border-2 border-border"
                     />
                     {errors.name && (
-                      <p className="text-destructive text-sm mt-2">{errors.name.message}</p>
+                      <p className="text-destructive text-sm mt-2 flex gap-2">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.name.message}
+                      </p>
                     )}
                   </div>
 
                   <div>
-                    <Label htmlFor="email">Email Address</Label>
+                    <Label htmlFor="email" className="text-foreground font-semibold">
+                      Email
+                    </Label>
                     <Input
                       id="email"
                       type="email"
                       placeholder="john@example.com"
                       {...register("email")}
-                      className="mt-2"
+                      className="mt-2 border-2 border-border"
                     />
                     {errors.email && (
-                      <p className="text-destructive text-sm mt-2">{errors.email.message}</p>
+                      <p className="text-destructive text-sm mt-2 flex gap-2">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.email.message}
+                      </p>
                     )}
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="phone">Phone Number (Optional)</Label>
+                  <Label htmlFor="phone" className="text-foreground font-semibold">
+                    Phone Number
+                  </Label>
                   <Input
                     id="phone"
                     type="tel"
                     placeholder="(555) 123-4567"
                     {...register("phone")}
-                    className="mt-2"
+                    className="mt-2 border-2 border-border"
                   />
-                </div>
-
-                <div>
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea
-                    id="message"
-                    placeholder="Tell us how we can help you..."
-                    {...register("message")}
-                    className="mt-2 resize-none"
-                    rows={6}
-                  />
-                  {errors.message && (
-                    <p className="text-destructive text-sm mt-2">{errors.message.message}</p>
+                  {errors.phone && (
+                    <p className="text-destructive text-sm mt-2 flex gap-2">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.phone.message}
+                    </p>
                   )}
                 </div>
 
-                <Button
+                <div>
+                  <Label htmlFor="subject" className="text-foreground font-semibold">
+                    Subject
+                  </Label>
+                  <Input
+                    id="subject"
+                    placeholder="How can we help?"
+                    {...register("subject")}
+                    className="mt-2 border-2 border-border"
+                  />
+                  {errors.subject && (
+                    <p className="text-destructive text-sm mt-2 flex gap-2">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.subject.message}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="message" className="text-foreground font-semibold">
+                    Message
+                  </Label>
+                  <Textarea
+                    id="message"
+                    placeholder="Tell us more about your inquiry..."
+                    {...register("message")}
+                    className="mt-2 border-2 border-border resize-none"
+                    rows={6}
+                  />
+                  {errors.message && (
+                    <p className="text-destructive text-sm mt-2 flex gap-2">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.message.message}
+                    </p>
+                  )}
+                </div>
+
+                <button
                   type="submit"
-                  size="lg"
-                  className="w-full bg-accent hover:bg-accent/90"
+                  className="btn-primary w-full"
                   disabled={isSubmitting || submitContactMutation.isPending}
                 >
                   {isSubmitting || submitContactMutation.isPending ? "Sending..." : "Send Message"}
-                </Button>
+                </button>
               </form>
             </CardContent>
           </Card>
 
           {/* Hours Section */}
-          <Card className="border-border mt-8">
-            <CardHeader>
-              <CardTitle>Hours of Operation</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-semibold text-foreground mb-3">Weekdays</h4>
-                  <p className="text-muted-foreground">Monday - Friday</p>
-                  <p className="text-lg font-semibold text-accent">9:00 AM - 6:00 PM</p>
+          <div className="grid md:grid-cols-2 gap-6 mt-12">
+            <Card className="card-premium bg-gradient-to-br from-accent-gold/5 to-accent/5">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-accent-gold" />
+                  Business Hours
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <div className="flex justify-between pb-2 border-b border-border">
+                  <span className="font-semibold">Monday - Friday:</span>
+                  <span>9:00 AM - 6:00 PM</span>
                 </div>
-                <div>
-                  <h4 className="font-semibold text-foreground mb-3">Weekends</h4>
-                  <p className="text-muted-foreground">Saturday - Sunday</p>
-                  <p className="text-lg font-semibold text-accent">10:00 AM - 4:00 PM</p>
+                <div className="flex justify-between pb-2 border-b border-border">
+                  <span className="font-semibold">Saturday:</span>
+                  <span>10:00 AM - 4:00 PM</span>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="flex justify-between">
+                  <span className="font-semibold">Sunday:</span>
+                  <span>Closed</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="card-premium bg-gradient-to-br from-accent-purple/5 to-accent-teal/5">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <span className="text-xl">✨</span>
+                  Quick Response
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <p className="text-muted-foreground">
+                  We aim to respond to all inquiries within 24 hours during business days.
+                </p>
+                <p className="text-muted-foreground">
+                  For urgent matters, please call us directly at <span className="font-semibold text-primary">(555) 123-4567</span>.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
