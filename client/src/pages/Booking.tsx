@@ -109,7 +109,7 @@ export default function Booking() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-border sticky top-0 z-40">
+      <div className="navbar-sticky">
         <div className="container mx-auto py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <ArrowLeft className="w-5 h-5" />
@@ -125,14 +125,19 @@ export default function Booking() {
 
       <div className="container mx-auto py-12">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-foreground mb-4">Book Your Appointment</h1>
+          <div className="text-center mb-12 fade-in">
+            <h1
+              className="text-foreground mb-4"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              Book Your Appointment
+            </h1>
             <p className="text-lg text-muted-foreground">
               Choose a service and select your preferred date and time
             </p>
           </div>
 
-          <Card className="border-border">
+          <Card className="card-premium">
             <CardHeader>
               <CardTitle>Appointment Details</CardTitle>
               <CardDescription>Fill in your information to complete the booking</CardDescription>
@@ -141,7 +146,7 @@ export default function Booking() {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Service Selection */}
                 <div>
-                  <Label htmlFor="serviceType" className="text-base font-semibold mb-3 block">
+                  <Label htmlFor="serviceType" className="text-base font-semibold mb-3 block text-foreground">
                     Select Service
                   </Label>
                   <Select value={selectedService} onValueChange={(value) => {
@@ -167,7 +172,7 @@ export default function Booking() {
                 {/* Personal Information */}
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="clientName">Full Name</Label>
+                    <Label htmlFor="clientName" className="text-foreground font-semibold">Full Name</Label>
                     <Input
                       id="clientName"
                       placeholder="John Doe"
@@ -180,7 +185,7 @@ export default function Booking() {
                   </div>
 
                   <div>
-                    <Label htmlFor="clientEmail">Email</Label>
+                    <Label htmlFor="clientEmail" className="text-foreground font-semibold">Email</Label>
                     <Input
                       id="clientEmail"
                       type="email"
@@ -194,7 +199,7 @@ export default function Booking() {
                   </div>
 
                   <div>
-                    <Label htmlFor="clientPhone">Phone Number</Label>
+                    <Label htmlFor="clientPhone" className="text-foreground font-semibold">Phone Number</Label>
                     <Input
                       id="clientPhone"
                       type="tel"
@@ -211,7 +216,7 @@ export default function Booking() {
                 {/* Date & Time Selection */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="appointmentDate">Preferred Date</Label>
+                    <Label htmlFor="appointmentDate" className="text-foreground font-semibold">Preferred Date</Label>
                     <Input
                       id="appointmentDate"
                       type="date"
@@ -226,7 +231,7 @@ export default function Booking() {
                   </div>
 
                   <div>
-                    <Label htmlFor="appointmentTime">Preferred Time</Label>
+                    <Label htmlFor="appointmentTime" className="text-foreground font-semibold">Preferred Time</Label>
                     <Select value={appointmentTime} onValueChange={(value) => {
                       setValue("appointmentTime", value);
                     }}>
@@ -249,7 +254,7 @@ export default function Booking() {
 
                 {/* Duration */}
                 <div>
-                  <Label htmlFor="duration">Session Duration</Label>
+                  <Label htmlFor="duration" className="text-foreground font-semibold">Session Duration</Label>
                   <Select value={watch("duration")} onValueChange={(value) => {
                     setValue("duration", value);
                   }}>
@@ -270,7 +275,7 @@ export default function Booking() {
 
                 {/* Notes */}
                 <div>
-                  <Label htmlFor="notes">Additional Notes (Optional)</Label>
+                  <Label htmlFor="notes" className="text-foreground font-semibold">Additional Notes (Optional)</Label>
                   <Textarea
                     id="notes"
                     placeholder="Any specific requests or health considerations..."
@@ -281,14 +286,13 @@ export default function Booking() {
                 </div>
 
                 {/* Submit Button */}
-                <Button
+                <button
                   type="submit"
-                  size="lg"
-                  className="w-full bg-accent hover:bg-accent/90"
+                  className="btn-primary w-full"
                   disabled={isSubmitting || createAppointmentMutation.isPending}
                 >
                   {isSubmitting || createAppointmentMutation.isPending ? "Booking..." : "Confirm Booking"}
-                </Button>
+                </button>
               </form>
             </CardContent>
           </Card>
